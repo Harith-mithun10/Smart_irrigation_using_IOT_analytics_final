@@ -1,0 +1,2 @@
+# Smart_irrigation_using_IOT_analytics_final
+Smart Irrigation system using IoT analytics
