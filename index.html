@@ -1,0 +1,1704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AquaFlow — Smart Irrigation IoT</title>
+
+  <!-- Google Fonts: Syne (display) + DM Sans (body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+  <!-- ========== SIDEBAR NAVIGATION ========== -->
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-icon">
+        <!-- Droplet SVG icon -->
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2C12 2 5 9.5 5 14a7 7 0 0014 0C19 9.5 12 2 12 2z" fill="currentColor" opacity="0.9"/>
+          <path d="M9 15.5a3 3 0 004 0" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div>
+        <span class="brand-title">AquaFlow</span>
+        <span class="brand-sub">IoT Analytics</span>
+      </div>
+    </div>
+
+    <!-- System status badge -->
+    <div class="sidebar-status">
+      <span class="status-dot active"></span>
+      <span class="status-label">System Online</span>
+    </div>
+
+    <!-- Navigation Links -->
+    <ul class="nav-list">
+      <li class="nav-item active" data-section="home">
+        <span class="nav-icon">
+          <!-- Home icon -->
+          <svg viewBox="0 0 24 24" fill="none"><path d="M3 12L12 4l9 8v8a1 1 0 01-1 1H5a1 1 0 01-1-1v-8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><polyline points="9 22 9 12 15 12 15 22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        Home
+      </li>
+      <li class="nav-item" data-section="sensors">
+        <span class="nav-icon">
+          <!-- Activity/Wave icon -->
+          <svg viewBox="0 0 24 24" fill="none"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        Sensor Readings
+      </li>
+      <li class="nav-item" data-section="performance">
+        <span class="nav-icon">
+          <!-- Chart icon -->
+          <svg viewBox="0 0 24 24" fill="none"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><polyline points="17 6 23 6 23 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        Performance
+      </li>
+      <li class="nav-item" data-section="alerts">
+        <span class="nav-icon">
+          <!-- Bell icon -->
+          <svg viewBox="0 0 24 24" fill="none"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M13.73 21a2 2 0 01-3.46 0" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        Alert Logs
+        <!-- Badge showing alert count -->
+        <span class="nav-badge">4</span>
+      </li>
+      <li class="nav-item" data-section="settings">
+        <span class="nav-icon">
+          <!-- Settings icon -->
+          <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z" stroke="currentColor" stroke-width="2"/></svg>
+        </span>
+        Device Settings
+      </li>
+      <li class="nav-item" data-section="manual">
+        <span class="nav-icon">
+          <!-- Toggle/Control icon -->
+          <svg viewBox="0 0 24 24" fill="none"><rect x="1" y="5" width="22" height="14" rx="7" stroke="currentColor" stroke-width="2"/><circle cx="8" cy="12" r="3" fill="currentColor"/></svg>
+        </span>
+        Manual Control
+      </li>
+      <li class="nav-item" data-section="cropinfo">
+        <span class="nav-icon">
+          <!-- Leaf icon -->
+          <svg viewBox="0 0 24 24" fill="none"><path d="M17 8C8 10 5.9 16.17 3.82 19.34L5.71 21l1-1C11 16 17 15 21 11c-1-2-2-4-4-3z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M3.82 19.34C4.78 16.17 6.5 11.22 10 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        Crop Info
+      </li>
+    </ul>
+
+    <!-- Sidebar footer -->
+    <div class="sidebar-footer">
+      <span class="footer-version">v2.4.1 · Field Node #7</span>
+    </div>
+  </nav>
+
+  <!-- ========== MAIN CONTENT WRAPPER ========== -->
+  <main class="main-content" id="mainContent">
+
+    <!-- ── TOPBAR ── -->
+    <header class="topbar">
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle sidebar">
+        <svg viewBox="0 0 24 24" fill="none"><line x1="3" y1="6" x2="21" y2="6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="3" y1="12" x2="21" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="3" y1="18" x2="21" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+      <div class="topbar-title" id="topbarTitle">Home</div>
+      <div class="topbar-right">
+        <div class="topbar-time" id="liveTime"></div>
+        <div class="topbar-avatar">AQ</div>
+      </div>
+    </header>
+
+    <!-- ══════════════════════════════════════
+         SECTION 0 — HOME
+    ══════════════════════════════════════ -->
+    <section class="page-section active" id="section-home">
+      <div class="hero">
+        <!-- Background image placeholder — replace src with actual field image -->
+        <div class="hero-bg" style="background-image: url('https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&w=1600&q=80')"></div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+          <div class="hero-eyebrow">Real-time Field Intelligence</div>
+          <h1 class="hero-headline">Smart Irrigation System<br/><span class="hero-accent">using IoT Analytics</span></h1>
+          <p class="hero-sub">Precision water management powered by distributed sensor networks,<br/>adaptive control algorithms, and cloud-native data pipelines.</p>
+          <div class="hero-cta-row">
+            <button class="btn-hero primary" onclick="navigateTo('sensors')">View Sensor Readings</button>
+            <button class="btn-hero secondary" onclick="navigateTo('performance')">Performance Dashboard</button>
+          </div>
+        </div>
+
+        <!-- Floating stats cards on hero -->
+        <div class="hero-stats">
+          <div class="hero-stat-card" id="home-stat-ph">
+            <span class="hsc-value" id="home-ph-value">6.8</span>
+            <span class="hsc-label">Field pH</span>
+            <span class="hsc-status" id="home-ph-status">Optimal</span>
+          </div>
+          <div class="hero-stat-card" id="home-stat-moisture">
+            <span class="hsc-value" id="home-moisture-value">73%</span>
+            <span class="hsc-label">Soil Moisture</span>
+            <span class="hsc-status" id="home-moisture-status">Optimal</span>
+          </div>
+          <div class="hero-stat-card" id="home-stat-temp">
+            <span class="hsc-value" id="home-temp-value">26°C</span>
+            <span class="hsc-label">Temperature</span>
+            <span class="hsc-status" id="home-temp-status">Normal</span>
+          </div>
+          <div class="hero-stat-card" id="home-stat-pump">
+            <span class="hsc-value" id="home-pump-value">RUNNING</span>
+            <span class="hsc-label">Pump Status</span>
+            <span class="hsc-status" id="home-pump-status">Active</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════
+         SECTION 1 — SENSOR READINGS
+    ══════════════════════════════════════ -->
+    <section class="page-section" id="section-sensors">
+      <div class="section-header">
+        <h2>Sensor Readings</h2>
+        <p>Live telemetry from field-deployed IoT nodes — updated every 5 seconds.</p>
+      </div>
+
+      <!-- 4-column responsive sensor grid -->
+      <div class="sensor-grid">
+
+        <!-- Card: pH Level -->
+        <div class="sensor-card" data-color="emerald">
+          <div class="sc-icon-wrap">
+            <!-- pH / flask icon -->
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9 3h6v7l4 9H5l4-9V3z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <line x1="9" y1="3" x2="15" y2="3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <circle cx="14" cy="15" r="1.5" fill="currentColor"/>
+            </svg>
+          </div>
+          <div class="sc-body">
+            <span class="sc-label">pH Level</span>
+            <span class="sc-value" id="ph-value">6.82</span>
+            <span class="sc-unit">pH</span>
+          </div>
+          <div class="sc-footer">
+            <span class="sc-status good" id="ph-status">● Optimal Range</span>
+            <span class="sc-range">Target: 6.0 – 7.5</span>
+          </div>
+          <div class="sc-sparkline">
+            <canvas id="sparkline-ph" height="40"></canvas>
+          </div>
+        </div>
+
+        <!-- Card: Soil Moisture -->
+        <div class="sensor-card" data-color="mint">
+          <div class="sc-icon-wrap">
+            <!-- Droplets icon -->
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M12 2C12 2 6 9 6 13a6 6 0 0012 0C18 9 12 2 12 2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="sc-body">
+            <span class="sc-label">Soil Moisture</span>
+            <span class="sc-value" id="moisture-value">73</span>
+            <span class="sc-unit">%</span>
+          </div>
+          <div class="sc-footer">
+            <span class="sc-status good" id="moisture-status">● Optimal Range</span>
+            <span class="sc-range">Target: 60 – 80%</span>
+          </div>
+          <!-- Progress bar for moisture -->
+          <div class="sc-progress-wrap">
+            <div class="sc-progress-bar" style="--val: 73%"></div>
+          </div>
+        </div>
+
+        <!-- Card: Temperature & Humidity -->
+        <div class="sensor-card" data-color="sage">
+          <div class="sc-icon-wrap">
+            <!-- Thermometer icon -->
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M14 14.76V3.5a2.5 2.5 0 00-5 0v11.26a4.5 4.5 0 105 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="sc-body">
+            <span class="sc-label">Temperature</span>
+            <span class="sc-value" id="temp-value">26.4</span>
+            <span class="sc-unit">°C</span>
+          </div>
+          <div class="sc-footer">
+            <span class="sc-status warning" id="temp-status">● Slightly High</span>
+            <span class="sc-range">Humidity: <strong id="humidity-value">68</strong>%</span>
+          </div>
+          <div class="sc-sparkline">
+            <canvas id="sparkline-temp" height="40"></canvas>
+          </div>
+        </div>
+
+        <!-- Card: Rain Possibility -->
+        <div class="sensor-card" data-color="blue-green">
+          <div class="sc-icon-wrap">
+            <!-- Cloud-rain icon -->
+            <svg viewBox="0 0 24 24" fill="none">
+              <line x1="8" y1="19" x2="8" y2="21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <line x1="8" y1="13" x2="8" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <line x1="16" y1="19" x2="16" y2="21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <line x1="16" y1="13" x2="16" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <line x1="12" y1="21" x2="12" y2="23" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <line x1="12" y1="15" x2="12" y2="17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M20 16.58A5 5 0 0018 7h-1.26A8 8 0 104 15.25" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="sc-body">
+            <span class="sc-label">Rain Possibility</span>
+            <span class="sc-value" id="rain-value">34</span>
+            <span class="sc-unit">%</span>
+          </div>
+          <div class="sc-footer">
+            <span class="sc-status notice" id="rain-status">● Moderate Chance</span>
+            <span class="sc-range" id="rain-range">Next 12 hrs forecast</span>
+          </div>
+          <div class="sc-progress-wrap">
+            <div class="sc-progress-bar rain" style="--val: 34%"></div>
+          </div>
+        </div>
+
+      </div><!-- /sensor-grid -->
+
+      <!-- Secondary row: mini stats bar -->
+      <div class="sensor-secondary">
+        <div class="mini-stat">
+          <span class="ms-icon">🌬️</span>
+          <span class="ms-label">Wind Speed</span>
+          <span class="ms-val">12 km/h</span>
+        </div>
+        <div class="mini-stat">
+          <span class="ms-icon">☀️</span>
+          <span class="ms-label">Solar Irr.</span>
+          <span class="ms-val">710 W/m²</span>
+        </div>
+        <div class="mini-stat">
+          <span class="ms-icon">🌱</span>
+          <span class="ms-label">EC Level</span>
+          <span class="ms-val">1.4 dS/m</span>
+        </div>
+        <div class="mini-stat">
+          <span class="ms-icon">💧</span>
+          <span class="ms-label">Water Flow</span>
+          <span class="ms-val">4.2 L/min</span>
+        </div>
+        <div class="mini-stat">
+          <span class="ms-icon">🔋</span>
+          <span class="ms-label">Node Battery</span>
+          <span class="ms-val">87%</span>
+        </div>
+        <div class="mini-stat">
+          <span class="ms-icon">📡</span>
+          <span class="ms-label">Signal</span>
+          <span class="ms-val">-67 dBm</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════
+         SECTION 2 — PERFORMANCE ANALYSIS
+    ══════════════════════════════════════ -->
+    <section class="page-section" id="section-performance">
+      <div class="section-header">
+        <h2>Performance Analysis</h2>
+        <p>Tracking optimum vs practical field values over a rolling 7-day window.</p>
+      </div>
+
+      <div class="perf-layout">
+
+        <!-- Left: Line Chart -->
+        <div class="perf-chart-card">
+          <div class="pcc-header">
+            <div>
+              <h3>Optimum vs Practical Values</h3>
+              <span class="pcc-sub">Soil Moisture · pH · Temperature</span>
+            </div>
+            <div class="pcc-legend">
+              <span class="legend-dot green"></span> Optimum
+              <span class="legend-dot teal"></span> Practical
+            </div>
+          </div>
+          <div class="chart-wrap">
+            <canvas id="mainLineChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Right: Gauge + summary -->
+        <div class="perf-right-col">
+
+          <!-- Gauge chart -->
+          <div class="gauge-card">
+            <h3>Field Health Score</h3>
+            <p class="gauge-sub">Running average of all sensor readings vs optimal ranges</p>
+            <div class="gauge-wrap">
+              <canvas id="gaugeChart" width="220" height="130"></canvas>
+              <div class="gauge-label-center">
+                <span class="gauge-value">82</span>
+                <span class="gauge-unit">/ 100</span>
+              </div>
+            </div>
+            <div class="gauge-footer">
+              <span class="gauge-rating good">Good Condition</span>
+            </div>
+          </div>
+
+          <!-- Summary metrics -->
+          <div class="perf-metrics">
+            <div class="pm-item">
+              <span class="pm-label">Avg. pH Deviation</span>
+              <span class="pm-val accent">+0.12 pH</span>
+            </div>
+            <div class="pm-item">
+              <span class="pm-label">Moisture Efficiency</span>
+              <span class="pm-val">91.3%</span>
+            </div>
+            <div class="pm-item">
+              <span class="pm-label">Pump Runtime Today</span>
+              <span class="pm-val">4h 22m</span>
+            </div>
+            <div class="pm-item">
+              <span class="pm-label">Water Saved (Est.)</span>
+              <span class="pm-val accent">18.4 L</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════
+         SECTION 3 — ALERT LOGS
+    ══════════════════════════════════════ -->
+    <section class="page-section" id="section-alerts">
+      <div class="section-header">
+        <h2>Alert Logs</h2>
+        <p>Automated system event feed — prioritized by severity.</p>
+      </div>
+
+      <div class="alerts-feed">
+
+        <!-- Critical -->
+        <div class="alert-card critical">
+          <div class="alert-icon-col">
+            <span class="alert-severity-tag critical">CRITICAL</span>
+          </div>
+          <div class="alert-body">
+            <div class="alert-title">🛑 Unexpected Rain Detected — Pump Bypass Triggered</div>
+            <div class="alert-detail">Rainfall sensor threshold exceeded (>5mm/hr). Bypass sequence initiated. Water pump <strong>STOPPED</strong> via automated override to prevent over-saturation. IR Remote signal sent to Field Node #7.</div>
+            <div class="alert-meta">
+              <span>Node: Field #7</span>
+              <span>Today, 14:32 IST</span>
+              <span class="alert-action resolved">✔ Auto-Resolved</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Alert -->
+        <div class="alert-card danger">
+          <div class="alert-icon-col">
+            <span class="alert-severity-tag danger">ALERT</span>
+          </div>
+          <div class="alert-body">
+            <div class="alert-title">🚨 Low Water Level Detected in Reservoir</div>
+            <div class="alert-detail">Reservoir level dropped below the 20% threshold (currently at 14%). Automated alert dispatched to operator. Secondary water source failover pending manual authorization.</div>
+            <div class="alert-meta">
+              <span>Node: Reservoir A</span>
+              <span>Today, 11:05 IST</span>
+              <span class="alert-action pending">⚡ Action Required</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Warning -->
+        <div class="alert-card warning">
+          <div class="alert-icon-col">
+            <span class="alert-severity-tag warning">WARNING</span>
+          </div>
+          <div class="alert-body">
+            <div class="alert-title">⚠️ Uneven Water pH Level Detected</div>
+            <div class="alert-detail">pH variation beyond ±0.5 units detected across irrigation zones. Zone 3 reads 7.8 pH (optimal: 6.0–7.5). Irrigation paused in Zone 3 pending calibration.</div>
+            <div class="alert-meta">
+              <span>Node: Zone 3</span>
+              <span>Today, 09:47 IST</span>
+              <span class="alert-action pending">⚡ Pending Review</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Notice -->
+        <div class="alert-card notice">
+          <div class="alert-icon-col">
+            <span class="alert-severity-tag notice">NOTICE</span>
+          </div>
+          <div class="alert-body">
+            <div class="alert-title">🌦️ Rain Possibility Forecasted — Schedule Adjusted</div>
+            <div class="alert-detail">34% probability of rainfall detected in next 12 hours via weather API. Morning irrigation cycle reduced by 40% to conserve water and prevent runoff. Schedule will auto-resume if rain does not occur.</div>
+            <div class="alert-meta">
+              <span>Source: Weather Service</span>
+              <span>Today, 06:00 IST</span>
+              <span class="alert-action resolved">✔ Auto-Adjusted</span>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /alerts-feed -->
+    </section>
+
+    <!-- ══════════════════════════════════════
+         SECTION 4 — DEVICE SETTINGS
+    ══════════════════════════════════════ -->
+    <section class="page-section" id="section-settings">
+      <div class="section-header">
+        <h2>Device Settings</h2>
+        <p>Configure sensor thresholds, sync intervals, and device parameters.</p>
+      </div>
+
+      <div class="settings-layout">
+
+        <!-- Threshold configuration -->
+        <div class="settings-card">
+          <h3 class="settings-card-title">Sensor Thresholds</h3>
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Min pH Threshold</label>
+              <input type="number" step="0.1" value="6.0" min="0" max="14" placeholder="e.g. 6.0"/>
+            </div>
+            <div class="form-group">
+              <label>Max pH Threshold</label>
+              <input type="number" step="0.1" value="7.5" min="0" max="14" placeholder="e.g. 7.5"/>
+            </div>
+            <div class="form-group">
+              <label>Min Soil Moisture (%)</label>
+              <input type="number" value="60" min="0" max="100" placeholder="e.g. 60"/>
+            </div>
+            <div class="form-group">
+              <label>Max Soil Moisture (%)</label>
+              <input type="number" value="80" min="0" max="100" placeholder="e.g. 80"/>
+            </div>
+            <div class="form-group">
+              <label>Temperature Alert (°C)</label>
+              <input type="number" value="35" min="0" max="60" placeholder="e.g. 35"/>
+            </div>
+            <div class="form-group">
+              <label>Rain Bypass Threshold (%)</label>
+              <input type="number" value="60" min="0" max="100" placeholder="e.g. 60"/>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sensor Sync configuration -->
+        <div class="settings-card">
+          <h3 class="settings-card-title">Sync & Polling Configuration</h3>
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Sensor Poll Interval (sec)</label>
+              <input type="number" value="5" min="1" max="3600" placeholder="e.g. 5"/>
+            </div>
+            <div class="form-group">
+              <label>Cloud Sync Interval (min)</label>
+              <input type="number" value="15" min="1" max="1440" placeholder="e.g. 15"/>
+            </div>
+            <div class="form-group">
+              <label>Alert Cooldown (min)</label>
+              <input type="number" value="10" min="1" max="120" placeholder="e.g. 10"/>
+            </div>
+            <div class="form-group">
+              <label>Data Retention (days)</label>
+              <input type="number" value="90" min="1" max="3650" placeholder="e.g. 90"/>
+            </div>
+          </div>
+        </div>
+
+        <!-- Device identifiers -->
+        <div class="settings-card wide">
+          <h3 class="settings-card-title">Device & Network Identifiers</h3>
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Field Node ID</label>
+              <input type="text" value="NODE-007-ALPHA" placeholder="Node identifier"/>
+            </div>
+            <div class="form-group">
+              <label>MQTT Broker URL</label>
+              <input type="text" value="mqtt://broker.aquaflow.io:1883" placeholder="Broker endpoint"/>
+            </div>
+            <div class="form-group">
+              <label>API Endpoint</label>
+              <input type="text" value="https://api.aquaflow.io/v2" placeholder="Backend API URL"/>
+            </div>
+            <div class="form-group">
+              <label>Firmware Version</label>
+              <input type="text" value="2.4.1-stable" placeholder="e.g. 2.4.1" readonly/>
+            </div>
+          </div>
+          <div class="settings-actions">
+            <button class="btn-save">Save Configuration</button>
+            <button class="btn-reset">Reset to Defaults</button>
+          </div>
+        </div>
+
+      </div><!-- /settings-layout -->
+    </section>
+
+    <!-- ══════════════════════════════════════
+         SECTION 5 — MANUAL CONTROL
+    ══════════════════════════════════════ -->
+    <section class="page-section" id="section-manual">
+      <div class="section-header">
+        <h2>Manual Control</h2>
+        <p>Hardware override interface — take direct control of the irrigation system.</p>
+      </div>
+
+      <div class="manual-layout">
+
+        <!-- System Mode Status Widget -->
+        <div class="manual-status-card" id="manualStatusCard">
+          <div class="msc-mode-badge auto" id="modeBadge">AUTOMATED</div>
+          <div class="msc-icon">
+            <!-- Robot/automation icon -->
+            <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="20" y="28" width="40" height="32" rx="8" stroke="currentColor" stroke-width="3"/>
+              <rect x="30" y="38" width="8" height="8" rx="2" fill="currentColor" opacity="0.7"/>
+              <rect x="42" y="38" width="8" height="8" rx="2" fill="currentColor" opacity="0.7"/>
+              <path d="M33 58 Q40 64 47 58" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+              <path d="M40 20 L40 28" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+              <circle cx="40" cy="17" r="4" stroke="currentColor" stroke-width="2.5"/>
+              <path d="M20 40 L12 40" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+              <path d="M60 40 L68 40" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3 class="msc-title" id="mscTitle">System is running in Automated Mode</h3>
+          <p class="msc-desc" id="mscDesc">All irrigation decisions are handled by the AI controller using real-time sensor data. Manual override is available but not currently active.</p>
+          <div class="msc-toggle-row">
+            <span class="msc-toggle-label">Engage Manual Override</span>
+            <label class="toggle-switch">
+              <input type="checkbox" id="overrideToggle"/>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <!-- IR Remote Status Panel -->
+        <div class="manual-remote-card">
+          <h3>IR Remote Interface</h3>
+          <p class="remote-sub">Last command received from Infrared Remote handset</p>
+          <div class="remote-display" id="remoteDisplay">
+            <div class="remote-cmd" id="lastCmd">PUMP_ON</div>
+            <div class="remote-time" id="lastCmdTime">Received: Today 14:32:08 IST</div>
+            <div class="remote-source">Source: IR Remote Unit #3</div>
+          </div>
+          <!-- IR Remote Buttons (UI representation) -->
+          <div class="ir-btn-grid">
+            <button class="ir-btn pump-on" onclick="simulateIR('PUMP_ON')">PUMP ON</button>
+            <button class="ir-btn pump-off" onclick="simulateIR('PUMP_OFF')">PUMP OFF</button>
+            <button class="ir-btn zone1" onclick="simulateIR('ZONE_1')">Zone 1</button>
+            <button class="ir-btn zone2" onclick="simulateIR('ZONE_2')">Zone 2</button>
+            <button class="ir-btn zone3" onclick="simulateIR('ZONE_3')">Zone 3</button>
+            <button class="ir-btn all-stop" onclick="simulateIR('ALL_STOP')">ALL STOP</button>
+          </div>
+          <div class="remote-note">⚠ IR commands will override automation. System will revert in 30 min of inactivity.</div>
+        </div>
+
+        <!-- Pump controls -->
+        <div class="manual-pump-card">
+          <h3>Direct Pump Control</h3>
+          <div class="pump-status-row">
+            <span class="pump-status-label">Pump Status</span>
+            <span class="pump-badge running" id="pumpBadge">● RUNNING</span>
+          </div>
+          <div class="pump-controls">
+            <button class="pump-btn start" onclick="pumpControl('start')">▶ Start Pump</button>
+            <button class="pump-btn stop" onclick="pumpControl('stop')">■ Stop Pump</button>
+          </div>
+          <div class="zone-select-wrap">
+            <label>Active Irrigation Zone</label>
+            <select class="zone-select">
+              <option>Zone 1 — North Field</option>
+              <option selected>Zone 2 — Central Field</option>
+              <option>Zone 3 — South Field</option>
+              <option>All Zones</option>
+            </select>
+          </div>
+          <div class="duration-wrap">
+            <label>Manual Run Duration</label>
+            <div class="duration-row">
+              <input type="number" value="20" min="1" max="120" class="duration-input"/> 
+              <span class="duration-unit">minutes</span>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /manual-layout -->
+    </section>
+
+    <!-- ══════════════════════════════════════
+         SECTION 6 — CROP INFO
+    ══════════════════════════════════════ -->
+    <section class="page-section" id="section-cropinfo">
+      <div class="section-header">
+        <h2>Crop Info Database</h2>
+        <p>Search the crop database for optimal irrigation parameters.</p>
+      </div>
+
+      <!-- Search Bar Widget -->
+      <div class="crop-search-widget">
+        <div class="csw-input-wrap">
+          <svg class="csw-search-icon" viewBox="0 0 24 24" fill="none">
+            <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
+            <line x1="21" y1="21" x2="16.65" y2="16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <input type="text" id="cropSearchInput" class="csw-input" placeholder="Search crop name (e.g. Wheat, Rice, Tomato)..." autocomplete="off"/>
+          <button class="csw-btn" id="cropSearchBtn">Search</button>
+        </div>
+        <!-- Quick crop chips -->
+        <div class="csw-chips">
+          <span class="crop-chip" onclick="quickSearch('Rice')">Rice</span>
+          <span class="crop-chip" onclick="quickSearch('Wheat')">Wheat</span>
+          <span class="crop-chip" onclick="quickSearch('Tomato')">Tomato</span>
+          <span class="crop-chip" onclick="quickSearch('Cotton')">Cotton</span>
+          <span class="crop-chip" onclick="quickSearch('Maize')">Maize</span>
+          <span class="crop-chip" onclick="quickSearch('Soybean')">Soybean</span>
+        </div>
+      </div>
+
+      <!-- Loading state -->
+      <div class="crop-loading" id="cropLoading" style="display:none">
+        <div class="loading-spinner"></div>
+        <span>Fetching crop data...</span>
+      </div>
+
+      <!-- Error state -->
+      <div class="crop-error" id="cropError" style="display:none">
+        <span>⚠️ Crop not found. Please try a different name or check the database.</span>
+      </div>
+
+      <!-- Results display -->
+      <div class="crop-results" id="cropResults" style="display:none">
+        <div class="crop-name-block">
+          <div class="cnb-icon">🌾</div>
+          <div class="cnb-text">
+            <span class="cnb-label">Crop Name</span>
+            <span class="cnb-value" id="res-cropname">—</span>
+          </div>
+        </div>
+        <div class="crop-params-grid">
+          <div class="cp-card" data-color="blue-green">
+            <div class="cpc-icon">💧</div>
+            <div class="cpc-label">Optimal pH Range</div>
+            <div class="cpc-value" id="res-ph">—</div>
+          </div>
+          <div class="cp-card" data-color="mint">
+            <div class="cpc-icon">🌱</div>
+            <div class="cpc-label">Target Soil Moisture</div>
+            <div class="cpc-value" id="res-moisture">—</div>
+          </div>
+          <div class="cp-card" data-color="emerald">
+            <div class="cpc-icon">🌡️</div>
+            <div class="cpc-label">Optimal Temperature</div>
+            <div class="cpc-value" id="res-temp">—</div>
+          </div>
+          <div class="cp-card" data-color="sage">
+            <div class="cpc-icon">💨</div>
+            <div class="cpc-label">Ambient Humidity</div>
+            <div class="cpc-value" id="res-humidity">—</div>
+          </div>
+        </div>
+      </div><!-- /crop-results -->
+
+    </section>
+
+  </main><!-- /main-content -->
+
+  <!-- ========== EMBEDDED JAVASCRIPT ========== -->
+  <script>
+    /* ============================================================
+       NAVIGATION — SPA-style section switching
+    ============================================================ */
+    const navItems = document.querySelectorAll('.nav-item');
+    const sections = document.querySelectorAll('.page-section');
+    const topbarTitle = document.getElementById('topbarTitle');
+
+    // Map section keys to display titles
+    const sectionTitles = {
+      home: 'Home',
+      sensors: 'Sensor Readings',
+      performance: 'Performance Analysis',
+      alerts: 'Alert Logs',
+      settings: 'Device Settings',
+      manual: 'Manual Control',
+      cropinfo: 'Crop Info'
+    };
+
+    function navigateTo(sectionKey) {
+      // Deactivate all nav items and sections
+      navItems.forEach(i => i.classList.remove('active'));
+      sections.forEach(s => s.classList.remove('active'));
+
+      // Activate target
+      const targetNav = document.querySelector(`.nav-item[data-section="${sectionKey}"]`);
+      const targetSection = document.getElementById(`section-${sectionKey}`);
+
+      if (targetNav) targetNav.classList.add('active');
+      if (targetSection) targetSection.classList.add('active');
+
+      // Update topbar title
+      topbarTitle.textContent = sectionTitles[sectionKey] || sectionKey;
+
+      // Initialize charts on first visit to performance section
+      if (sectionKey === 'performance' && !chartsInitialized) {
+        initCharts();
+        chartsInitialized = true;
+      }
+    }
+
+    // Wire up sidebar nav items
+    navItems.forEach(item => {
+      item.addEventListener('click', () => {
+        navigateTo(item.dataset.section);
+      });
+    });
+
+    /* ============================================================
+       SIDEBAR TOGGLE (mobile)
+    ============================================================ */
+    const menuToggle = document.getElementById('menuToggle');
+    const sidebar = document.getElementById('sidebar');
+    menuToggle.addEventListener('click', () => {
+      sidebar.classList.toggle('open');
+    });
+
+    /* ============================================================
+       LIVE CLOCK
+    ============================================================ */
+    function updateClock() {
+      const now = new Date();
+      const opts = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+      document.getElementById('liveTime').textContent = now.toLocaleTimeString('en-IN', opts);
+    }
+    updateClock();
+    setInterval(updateClock, 1000);
+
+    /* ============================================================
+       CHARTS — Performance Analysis
+    ============================================================ */
+    let chartsInitialized = false;
+
+    // ── Rolling history buffers (max 20 readings) ──────────────
+    const HISTORY_MAX = 20;
+    const sensorHistory = {
+      labels:      [],
+      moisture:    [],
+      ph:          [],
+      temperature: []
+    };
+
+    // Optimum (centre of target range) reference values
+    const OPTIMUM = { moisture: 70, ph: 6.75, temperature: 28 };
+
+    // Chart instances (kept for live updates)
+    let lineChart   = null;
+    let gaugeChart  = null;
+    let sparkPh     = null;
+    let sparkTemp   = null;
+
+    // ── Compute a 0-100 field-health score from current readings ──
+    function computeHealthScore(ph, moisture, temp) {
+      // Score each parameter: 100 = within range, falls linearly outside
+      function score(val, lo, hi) {
+        if (val >= lo && val <= hi) return 100;
+        const mid = (lo + hi) / 2;
+        const span = (hi - lo) / 2;
+        return Math.max(0, 100 - Math.abs(val - mid) / span * 60);
+      }
+      const s = (score(ph, 6.0, 7.5) + score(moisture, 60, 80) + score(temp, 20, 35)) / 3;
+      return Math.round(s);
+    }
+
+    // ── Seed history with a short plausible back-fill ──────────
+    function seedHistory() {
+      const now = new Date();
+      const seeds = [
+        { m: 67, p: 6.70, t: 26.1 },
+        { m: 72, p: 6.75, t: 26.4 },
+        { m: 65, p: 6.80, t: 26.0 },
+        { m: 75, p: 6.82, t: 26.3 },
+        { m: 68, p: 6.78, t: 26.5 },
+        { m: 73, p: 6.84, t: 26.4 },
+        { m: 70, p: 6.81, t: 26.2 }
+      ];
+      seeds.forEach((s, i) => {
+        const t = new Date(now - (seeds.length - i) * 5000);
+        sensorHistory.labels.push(t.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }));
+        sensorHistory.moisture.push(s.m);
+        sensorHistory.ph.push(s.p);
+        sensorHistory.temperature.push(s.t);
+      });
+    }
+
+    // ── Push a new reading into history and trim ───────────────
+    function pushReading(ph, moisture, temp) {
+      const now = new Date();
+      sensorHistory.labels.push(now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }));
+      sensorHistory.moisture.push(moisture);
+      sensorHistory.ph.push(ph);
+      sensorHistory.temperature.push(temp);
+      if (sensorHistory.labels.length > HISTORY_MAX) {
+        sensorHistory.labels.shift();
+        sensorHistory.moisture.shift();
+        sensorHistory.ph.shift();
+        sensorHistory.temperature.shift();
+      }
+    }
+
+    // ── Update all live charts with latest history ─────────────
+    function refreshCharts() {
+      if (!chartsInitialized) return;
+
+      // Determine which metric is currently displayed
+      const activeMetric = window._perfMetric || 'moisture';
+      const metricMap = {
+        moisture:    { data: sensorHistory.moisture,    optimum: OPTIMUM.moisture,    label: 'Optimum Moisture (%)', pLabel: 'Practical Moisture (%)', yMin: 40, yMax: 100 },
+        ph:          { data: sensorHistory.ph,          optimum: OPTIMUM.ph,          label: 'Optimum pH',           pLabel: 'Practical pH',           yMin: 4,  yMax: 10  },
+        temperature: { data: sensorHistory.temperature, optimum: OPTIMUM.temperature, label: 'Optimum Temp (°C)',    pLabel: 'Practical Temp (°C)',    yMin: 10, yMax: 50  }
+      };
+      const m = metricMap[activeMetric];
+
+      // Update line chart
+      lineChart.data.labels = [...sensorHistory.labels];
+      lineChart.data.datasets[0].data = sensorHistory.labels.map(() => m.optimum);
+      lineChart.data.datasets[0].label = m.label;
+      lineChart.data.datasets[1].data = [...m.data];
+      lineChart.data.datasets[1].label = m.pLabel;
+      lineChart.options.scales.y.min = m.yMin;
+      lineChart.options.scales.y.max = m.yMax;
+      lineChart.update('none');  // no animation on live tick
+
+      // Re-compute health score from latest readings
+      const latestPh   = sensorHistory.ph[sensorHistory.ph.length - 1];
+      const latestMois = sensorHistory.moisture[sensorHistory.moisture.length - 1];
+      const latestTemp = sensorHistory.temperature[sensorHistory.temperature.length - 1];
+      const health = computeHealthScore(latestPh, latestMois, latestTemp);
+
+      gaugeChart.data.datasets[0].data = [health, 100 - health];
+      // Colour: ≥75 green, ≥50 amber, else red
+      const gColour = health >= 75 ? 'rgba(52,211,153,1)' : health >= 50 ? 'rgba(251,191,36,1)' : 'rgba(248,113,113,1)';
+      gaugeChart.data.datasets[0].backgroundColor[0] = gColour;
+      gaugeChart.update('none');
+
+      // Update label and rating text
+      document.querySelector('.gauge-value').textContent = health;
+      const ratingEl = document.querySelector('.gauge-rating');
+      if (health >= 75) { ratingEl.textContent = 'Good Condition';    ratingEl.className = 'gauge-rating good'; }
+      else if (health >= 50) { ratingEl.textContent = 'Fair Condition'; ratingEl.className = 'gauge-rating warn'; }
+      else { ratingEl.textContent = 'Poor Condition'; ratingEl.className = 'gauge-rating bad'; }
+
+      // Update perf metrics strip
+      const avgPh = (sensorHistory.ph.reduce((a,b)=>a+b,0)/sensorHistory.ph.length).toFixed(2);
+      const avgMois = (sensorHistory.moisture.reduce((a,b)=>a+b,0)/sensorHistory.moisture.length).toFixed(1);
+      const phDev = (avgPh - OPTIMUM.ph).toFixed(2);
+      const moisEff = Math.max(0, Math.min(100, 100 - Math.abs(avgMois - OPTIMUM.moisture) * 2)).toFixed(1);
+
+      const pmItems = document.querySelectorAll('.pm-item .pm-val');
+      if (pmItems[0]) pmItems[0].textContent = (phDev >= 0 ? '+' : '') + phDev + ' pH';
+      if (pmItems[1]) pmItems[1].textContent = moisEff + '%';
+
+      // Update sparklines
+      if (sparkPh) {
+        sparkPh.data.labels = sensorHistory.ph.map((_,i)=>i);
+        sparkPh.data.datasets[0].data = [...sensorHistory.ph];
+        sparkPh.update('none');
+      }
+      if (sparkTemp) {
+        sparkTemp.data.labels = sensorHistory.temperature.map((_,i)=>i);
+        sparkTemp.data.datasets[0].data = [...sensorHistory.temperature];
+        sparkTemp.update('none');
+      }
+    }
+
+    function initCharts() {
+      // Only seed with placeholder data if no real DB history has been loaded yet.
+      // backfillHistoryFromDB() may have already populated sensorHistory[] before
+      // the user clicked the Performance tab — preserve that real data.
+      if (sensorHistory.ph.length === 0) seedHistory();
+
+      // ── Line Chart: Optimum vs Practical ──
+      const lineCtx = document.getElementById('mainLineChart').getContext('2d');
+      lineChart = new Chart(lineCtx, {
+        type: 'line',
+        data: {
+          labels: [...sensorHistory.labels],
+          datasets: [
+            {
+              label: 'Optimum Moisture (%)',
+              data: sensorHistory.labels.map(() => OPTIMUM.moisture),
+              borderColor: '#34d399',
+              backgroundColor: 'rgba(52,211,153,0.08)',
+              borderWidth: 3,
+              pointBackgroundColor: '#34d399',
+              pointRadius: 3,
+              tension: 0.4,
+              fill: true
+            },
+            {
+              label: 'Practical Moisture (%)',
+              data: [...sensorHistory.moisture],
+              borderColor: '#2dd4bf',
+              backgroundColor: 'rgba(45,212,191,0.06)',
+              borderWidth: 2.5,
+              pointBackgroundColor: '#2dd4bf',
+              pointRadius: 3,
+              tension: 0.4,
+              borderDash: [6, 3],
+              fill: true
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: '#1e2a1e',
+              titleColor: '#a7f3d0',
+              bodyColor: '#d1fae5',
+              borderColor: '#34d399',
+              borderWidth: 1,
+              padding: 12,
+              cornerRadius: 10
+            }
+          },
+          scales: {
+            x: {
+              grid: { color: 'rgba(134,239,172,0.08)' },
+              ticks: { color: '#6b7280', font: { family: 'DM Sans' }, maxTicksLimit: 8 }
+            },
+            y: {
+              grid: { color: 'rgba(134,239,172,0.08)' },
+              ticks: { color: '#6b7280', font: { family: 'DM Sans' } },
+              min: 40, max: 100
+            }
+          }
+        }
+      });
+
+      // ── Metric selector tabs (inject if not present) ──────────
+      const pccHeader = document.querySelector('.pcc-header');
+      if (pccHeader && !document.getElementById('metricTabs')) {
+        const tabs = document.createElement('div');
+        tabs.id = 'metricTabs';
+        tabs.style.cssText = 'display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;';
+        ['moisture','ph','temperature'].forEach(key => {
+          const btn = document.createElement('button');
+          btn.textContent = key === 'ph' ? 'pH' : key.charAt(0).toUpperCase() + key.slice(1);
+          btn.dataset.metric = key;
+          btn.style.cssText = 'padding:4px 14px;border-radius:20px;border:1px solid #34d399;background:' + (key==='moisture'?'#34d399':'transparent') + ';color:' + (key==='moisture'?'#0a1a0a':'#34d399') + ';font-size:12px;cursor:pointer;font-family:DM Sans,sans-serif;transition:all .2s;';
+          btn.addEventListener('click', () => {
+            window._perfMetric = key;
+            document.querySelectorAll('#metricTabs button').forEach(b => {
+              b.style.background = 'transparent'; b.style.color = '#34d399';
+            });
+            btn.style.background = '#34d399'; btn.style.color = '#0a1a0a';
+            refreshCharts();
+          });
+          tabs.appendChild(btn);
+        });
+        pccHeader.appendChild(tabs);
+      }
+      window._perfMetric = 'moisture';
+
+      // ── Gauge Chart (Doughnut half) ──
+      const initHealth = computeHealthScore(
+        sensorHistory.ph.slice(-1)[0],
+        sensorHistory.moisture.slice(-1)[0],
+        sensorHistory.temperature.slice(-1)[0]
+      );
+      const gaugeCtx = document.getElementById('gaugeChart').getContext('2d');
+      gaugeChart = new Chart(gaugeCtx, {
+        type: 'doughnut',
+        data: {
+          datasets: [{
+            data: [initHealth, 100 - initHealth],
+            backgroundColor: [
+              'rgba(52,211,153,1)',
+              'rgba(209,250,229,0.2)'
+            ],
+            borderWidth: 0,
+            borderRadius: 8
+          }]
+        },
+        options: {
+          responsive: false,
+          circumference: 180,
+          rotation: -90,
+          cutout: '72%',
+          plugins: {
+            legend: { display: false },
+            tooltip: { enabled: false }
+          }
+        }
+      });
+      document.querySelector('.gauge-value').textContent = initHealth;
+
+      // ── Sparkline charts on sensor cards ──
+      function drawSparkline(canvasId, dataPoints, color) {
+        const ctx = document.getElementById(canvasId);
+        if (!ctx) return null;
+        return new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: dataPoints.map((_, i) => i),
+            datasets: [{
+              data: dataPoints,
+              borderColor: color,
+              borderWidth: 2,
+              pointRadius: 0,
+              tension: 0.4,
+              fill: false
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false }, tooltip: { enabled: false } },
+            scales: { x: { display: false }, y: { display: false } },
+            animation: { duration: 400 }
+          }
+        });
+      }
+
+      // Destroy pre-existing sparklines before re-creating (they may already exist)
+      ['sparkline-ph', 'sparkline-temp'].forEach(id => {
+        const c = document.getElementById(id);
+        if (c) { const ex = Chart.getChart(c); if (ex) ex.destroy(); }
+      });
+      sparkPh   = drawSparkline('sparkline-ph',   [...sensorHistory.ph],          '#34d399');
+      sparkTemp = drawSparkline('sparkline-temp',  [...sensorHistory.temperature], '#2dd4bf');
+    }
+
+    /* ============================================================
+       SENSOR STATUS HELPERS
+       Returns { label, scCls, hscCls } for each sensor type.
+       scCls  → class for the .sc-status span on sensor cards
+       hscCls → class for the .hsc-status span on home hero cards
+    ============================================================ */
+    function phStatus(v) {
+      if (v == null || isNaN(v)) return { label: 'No Data',      scCls: 'sc-status notice',  hscCls: 'hsc-status mild' };
+      if (v < 5.5)               return { label: 'Very Acidic',  scCls: 'sc-status critical', hscCls: 'hsc-status warn' };
+      if (v < 6.0)               return { label: 'Too Acidic',   scCls: 'sc-status bad',      hscCls: 'hsc-status warn' };
+      if (v > 8.0)               return { label: 'Very Alkaline',scCls: 'sc-status critical', hscCls: 'hsc-status warn' };
+      if (v > 7.5)               return { label: 'Too Alkaline', scCls: 'sc-status bad',      hscCls: 'hsc-status warn' };
+      return                            { label: 'Optimal',       scCls: 'sc-status good',     hscCls: 'hsc-status ok'   };
+    }
+    function moistureStatus(v) {
+      if (v == null || isNaN(v)) return { label: 'No Data',   scCls: 'sc-status notice',  hscCls: 'hsc-status mild' };
+      if (v < 30)                return { label: 'Critical — Dry',  scCls: 'sc-status critical', hscCls: 'hsc-status warn' };
+      if (v < 60)                return { label: 'Too Dry',   scCls: 'sc-status bad',      hscCls: 'hsc-status warn' };
+      if (v > 90)                return { label: 'Waterlogged',scCls: 'sc-status critical',hscCls: 'hsc-status warn' };
+      if (v > 80)                return { label: 'Too Wet',   scCls: 'sc-status bad',      hscCls: 'hsc-status warn' };
+      return                            { label: 'Optimal',    scCls: 'sc-status good',     hscCls: 'hsc-status ok'   };
+    }
+    function tempStatus(v) {
+      if (v == null || isNaN(v)) return { label: 'No Data',       scCls: 'sc-status notice',   hscCls: 'hsc-status mild' };
+      if (v >= 40)               return { label: 'Heat Alert',    scCls: 'sc-status critical',  hscCls: 'hsc-status warn' };
+      if (v >= 35)               return { label: 'High Temp',     scCls: 'sc-status bad',       hscCls: 'hsc-status warn' };
+      if (v >= 30)               return { label: 'Slightly High', scCls: 'sc-status warning',   hscCls: 'hsc-status mild' };
+      if (v < 10)                return { label: 'Too Cold',      scCls: 'sc-status bad',       hscCls: 'hsc-status warn' };
+      return                            { label: 'Normal',         scCls: 'sc-status good',      hscCls: 'hsc-status ok'  };
+    }
+    function humidityStatus(v) {
+      if (v == null || isNaN(v)) return { label: 'No Data',    scCls: 'sc-status notice',  hscCls: 'hsc-status mild' };
+      if (v < 30)                return { label: 'Very Dry Air',scCls: 'sc-status bad',    hscCls: 'hsc-status warn' };
+      if (v > 90)                return { label: 'Very Humid',  scCls: 'sc-status bad',    hscCls: 'hsc-status warn' };
+      return                            { label: 'Good',         scCls: 'sc-status good',   hscCls: 'hsc-status ok'  };
+    }
+    function rainStatus(v) {
+      if (v == null || isNaN(v)) return { label: 'No Data',        scCls: 'sc-status notice'  };
+      if (v >= 70)               return { label: 'Heavy Rain Likely',scCls: 'sc-status critical'};
+      if (v >= 40)               return { label: 'Moderate Chance', scCls: 'sc-status warning' };
+      if (v >= 20)               return { label: 'Low Chance',      scCls: 'sc-status notice'  };
+      return                            { label: 'Clear / No Rain',  scCls: 'sc-status good'   };
+    }
+
+    /* ============================================================
+       UPDATE HOME HERO STAT CARDS
+    ============================================================ */
+    function updateHomeStats() {
+      const phVal  = parseFloat(document.getElementById('ph-value')?.textContent);
+      const mVal   = parseFloat(document.getElementById('moisture-value')?.textContent);
+      const tVal   = parseFloat(document.getElementById('temp-value')?.textContent);
+
+      // pH hero card
+      const ps = phStatus(phVal);
+      const phHome = document.getElementById('home-ph-status');
+      if (phHome) { phHome.textContent = ps.label; phHome.className = ps.hscCls; }
+      document.getElementById('home-ph-value').textContent = isNaN(phVal) ? '--' : phVal.toFixed(2);
+      const phCard = document.getElementById('home-stat-ph');
+      if (phCard) phCard.dataset.state = ps.hscCls.includes('warn') ? 'warn' : 'ok';
+
+      // Moisture hero card
+      const ms = moistureStatus(mVal);
+      const mHome = document.getElementById('home-moisture-status');
+      if (mHome) { mHome.textContent = ms.label; mHome.className = ms.hscCls; }
+      document.getElementById('home-moisture-value').textContent = isNaN(mVal) ? '--' : mVal + '%';
+      const mCard = document.getElementById('home-stat-moisture');
+      if (mCard) mCard.dataset.state = ms.hscCls.includes('warn') ? 'warn' : 'ok';
+
+      // Temperature hero card
+      const ts = tempStatus(tVal);
+      const tHome = document.getElementById('home-temp-status');
+      if (tHome) { tHome.textContent = ts.label; tHome.className = ts.hscCls; }
+      document.getElementById('home-temp-value').textContent = isNaN(tVal) ? '--' : tVal.toFixed(1) + '°C';
+      const tCard = document.getElementById('home-stat-temp');
+      if (tCard) tCard.dataset.state = ts.hscCls.includes('warn') ? 'warn' : (ts.hscCls.includes('mild') ? 'mild' : 'ok');
+    }
+
+    /* ============================================================
+       APPLY LIVE READING — writes one API response into all DOM targets
+       ─────────────────────────────────────────────────────────────
+       Called after every successful poll. Updates:
+         • Sensor card values + status badges (sc-status spans)
+         • Home hero stat cards
+         • Progress bars (moisture, rain)
+         • Mini-stats row (water flow)
+         • Pump badge (Manual Control section)
+         • Chart history buffers + sparklines + performance charts
+    ============================================================ */
+    function applyLiveReading(data) {
+
+      // ── 1. Read current DOM values as fallback for null fields ──────────
+      // Arduino has no pH sensor: data.ph will be null. We keep the last
+      // known value so the pH card never goes blank.
+      const prevPh = parseFloat(document.getElementById('ph-value')?.textContent) || 6.8;
+
+      const ph       = (data.ph          != null && !isNaN(data.ph))          ? parseFloat(data.ph)          : prevPh;
+      const moisture = (data.soil_moisture!= null && !isNaN(data.soil_moisture))? parseFloat(data.soil_moisture): null;
+      const temp     = (data.temperature  != null && !isNaN(data.temperature))  ? parseFloat(data.temperature)  : null;
+      const humidity = (data.humidity     != null && !isNaN(data.humidity))     ? parseFloat(data.humidity)     : null;
+      const rain     = (data.rain_pct     != null && !isNaN(data.rain_pct))     ? parseFloat(data.rain_pct)     : null;
+
+      // ── 2. Update sensor card values ────────────────────────────────────
+      const phEl       = document.getElementById('ph-value');
+      const moistureEl = document.getElementById('moisture-value');
+      const tempEl     = document.getElementById('temp-value');
+      const humidityEl = document.getElementById('humidity-value');
+      const rainEl     = document.getElementById('rain-value');
+
+      if (phEl)       phEl.textContent       = ph.toFixed(2);
+      if (moistureEl && moisture != null) moistureEl.textContent = Math.round(moisture);
+      if (tempEl     && temp     != null) tempEl.textContent     = temp.toFixed(1);
+      if (humidityEl && humidity != null) humidityEl.textContent = Math.round(humidity);
+      if (rainEl     && rain     != null) rainEl.textContent     = Math.round(rain);
+
+      // ── 3. Update sensor card STATUS BADGES (sc-status spans) ───────────
+      // FIX: Previously these were never touched — status text was always
+      // the hardcoded HTML value. Now they update on every reading.
+      const phSt   = phStatus(ph);
+      const mSt    = moistureStatus(moisture);
+      const tSt    = tempStatus(temp);
+      const hSt    = humidityStatus(humidity);
+      const rSt    = rainStatus(rain);
+
+      const phStatusEl  = document.getElementById('ph-status');
+      const mStatusEl   = document.getElementById('moisture-status');
+      const tStatusEl   = document.getElementById('temp-status');
+      const rStatusEl   = document.getElementById('rain-status');
+      const rRangeEl    = document.getElementById('rain-range');
+
+      if (phStatusEl) { phStatusEl.textContent = '● ' + phSt.label;  phStatusEl.className = phSt.scCls; }
+      if (mStatusEl)  { mStatusEl.textContent  = '● ' + mSt.label;   mStatusEl.className  = mSt.scCls;  }
+      if (tStatusEl)  {
+        // Temperature card also shows humidity status
+        const label = tSt.label + (humidity != null ? '  · Humidity: ' + hSt.label : '');
+        tStatusEl.textContent = '● ' + tSt.label;
+        tStatusEl.className = tSt.scCls;
+      }
+      if (rStatusEl)  { rStatusEl.textContent  = '● ' + rSt.label;   rStatusEl.className  = rSt.scCls;  }
+      if (rRangeEl && rain != null) {
+        // Show whether pump should bypass due to rain
+        rRangeEl.textContent = rain >= 60 ? '⚠ Pump bypass recommended' : 'Next 12 hrs forecast';
+      }
+
+      // ── 4. Progress bars ─────────────────────────────────────────────────
+      const moistureBar = document.querySelector('.sc-progress-bar:not(.rain)');
+      if (moistureBar && moisture != null)
+        moistureBar.style.setProperty('--val', Math.round(moisture) + '%');
+
+      const rainBar = document.querySelector('.sc-progress-bar.rain');
+      if (rainBar && rain != null)
+        rainBar.style.setProperty('--val', Math.round(rain) + '%');
+
+      // ── 5. Water Flow mini-stat (4th .ms-val in secondary row) ──────────
+      const msVals = document.querySelectorAll('.mini-stat .ms-val');
+      if (msVals[3] && data.water_flow_lpm != null)
+        msVals[3].textContent = parseFloat(data.water_flow_lpm).toFixed(1) + ' L/min';
+
+      // ── 6. Pump status badge in Manual Control section ───────────────────
+      if (data.pump_status) {
+        const running = data.pump_status.toUpperCase() === 'RUNNING';
+        // pumpControl() is a function declaration so it is hoisted — safe to call here
+        pumpControl(running ? 'start' : 'stop');
+      }
+
+      // ── 7. Sync home hero cards with all updated values ──────────────────
+      updateHomeStats();
+
+      // ── 8. Push into rolling chart history and redraw ────────────────────
+      // FIX: refreshCharts() was a no-op before Performance tab was visited.
+      // We now always push data so history is ready when the user navigates there.
+      const chartPh   = ph;
+      const chartMois = moisture ?? (moistureEl ? parseFloat(moistureEl.textContent) : 70);
+      const chartTemp = temp     ?? (tempEl     ? parseFloat(tempEl.textContent)     : 26.4);
+      pushReading(chartPh, chartMois, chartTemp);
+
+      // Only call refreshCharts() if the Performance section has been
+      // initialised — otherwise the chart instances don't exist yet and
+      // Chart.js will throw. The history push above ensures the data is
+      // waiting for when initCharts() eventually runs.
+      if (chartsInitialized) refreshCharts();
+    }
+
+    /* ============================================================
+       BACKFILL CHART HISTORY FROM DB
+       Called once on load and on every poll tick.
+       FIX: removed the "length <= current" bail-out that prevented
+       updates when DB had the same count as in-memory buffer.
+       Now always rebuilds from DB when DB has ≥1 entry.
+    ============================================================ */
+    async function backfillHistoryFromDB() {
+      try {
+        const hRes  = await fetch('/api/sensor_data/history?limit=20', { cache: 'no-store' });
+        if (!hRes.ok) return;
+        const hData = await hRes.json();
+
+        if (!Array.isArray(hData) || hData.length === 0) return;
+
+        // hData is newest-first from the DB; rebuild oldest→newest
+        const ordered = [...hData].reverse();
+
+        // Replace in-memory history entirely with the DB snapshot
+        sensorHistory.labels      = [];
+        sensorHistory.moisture    = [];
+        sensorHistory.ph          = [];
+        sensorHistory.temperature = [];
+
+        // Track last known ph for null-filling (Arduino has no pH sensor)
+        let lastKnownPh = 6.8;
+        ordered.forEach(r => {
+          const ts = r.timestamp
+            ? new Date(r.timestamp).toLocaleTimeString('en-IN', {
+                hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
+              })
+            : '--:--:--';
+          sensorHistory.labels.push(ts);
+          sensorHistory.moisture.push(r.soil_moisture  ?? 0);
+          sensorHistory.temperature.push(r.temperature ?? 0);
+          // Use last known pH if this row has null (Arduino sends no pH)
+          if (r.ph != null) lastKnownPh = r.ph;
+          sensorHistory.ph.push(lastKnownPh);
+        });
+
+        // Trim to window size
+        while (sensorHistory.labels.length > HISTORY_MAX) {
+          sensorHistory.labels.shift();
+          sensorHistory.moisture.shift();
+          sensorHistory.ph.shift();
+          sensorHistory.temperature.shift();
+        }
+
+        // Redraw only if Performance charts are initialised
+        if (chartsInitialized) refreshCharts();
+
+      } catch (e) {
+        console.warn('[AquaFlow] History backfill failed:', e);
+      }
+    }
+
+    /* ============================================================
+       CONNECTION STATUS — updates sidebar badge
+    ============================================================ */
+    function setConnectionStatus(online) {
+      const dot   = document.querySelector('.status-dot');
+      const label = document.querySelector('.status-label');
+      if (!dot || !label) return;
+      if (online) {
+        dot.classList.add('active');
+        label.textContent = 'Live · ESP32 Online';
+      } else {
+        dot.classList.remove('active');
+        label.textContent = 'Reconnecting…';
+      }
+    }
+
+    /* ============================================================
+       SENSOR POLLING — fetches from Flask/SQLite backend
+       ─────────────────────────────────────────────────────────
+       Primary endpoint : GET /api/sensor/latest
+       Fallback endpoint: GET /api/sensor_data
+       History endpoint : GET /api/sensor_data/history?limit=20
+       Interval         : 5 000 ms  (matches ESP32 loop() delay of 2s;
+                          extra headroom for network latency)
+    ============================================================ */
+    async function pollLatestReading() {
+      try {
+        let res = await fetch('/api/sensor/latest', { cache: 'no-store' });
+        if (!res.ok) res = await fetch('/api/sensor_data', { cache: 'no-store' });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+
+        const data = await res.json();
+        applyLiveReading(data);
+        setConnectionStatus(true);
+
+      } catch (err) {
+        console.warn('[AquaFlow] Sensor poll failed:', err.message);
+        setConnectionStatus(false);
+        // DOM retains last-known values — no blank flicker on transient dropout
+      }
+    }
+
+    function simulateSensorUpdates() {
+      // Run once immediately — no 5s cold-start wait
+      pollLatestReading();
+      backfillHistoryFromDB();
+
+      setInterval(async () => {
+        await pollLatestReading();
+        await backfillHistoryFromDB();
+      }, 5000);
+    }
+
+    simulateSensorUpdates();
+    updateHomeStats();
+
+    /* ============================================================
+       MANUAL CONTROL — Override toggle & IR simulation
+    ============================================================ */
+    const overrideToggle = document.getElementById('overrideToggle');
+    const modeBadge = document.getElementById('modeBadge');
+    const mscTitle = document.getElementById('mscTitle');
+    const mscDesc = document.getElementById('mscDesc');
+
+    overrideToggle.addEventListener('change', function () {
+      if (this.checked) {
+        modeBadge.className = 'msc-mode-badge override';
+        modeBadge.textContent = 'MANUAL OVERRIDE';
+        mscTitle.textContent = 'Manual Override Mode — ACTIVE';
+        mscDesc.textContent = 'You are now in control. Sensor-based automation is suspended. All pump commands must be issued manually or via IR Remote.';
+      } else {
+        modeBadge.className = 'msc-mode-badge auto';
+        modeBadge.textContent = 'AUTOMATED';
+        mscTitle.textContent = 'System is running in Automated Mode';
+        mscDesc.textContent = 'All irrigation decisions are handled by the AI controller using real-time sensor data. Manual override is available but not currently active.';
+      }
+    });
+
+    function simulateIR(cmd) {
+      const display = document.getElementById('lastCmd');
+      const timeEl = document.getElementById('lastCmdTime');
+      display.textContent = cmd;
+      const now = new Date();
+      timeEl.textContent = 'Received: ' + now.toLocaleTimeString('en-IN') + ' IST';
+      // Highlight animation
+      display.classList.add('ir-flash');
+      setTimeout(() => display.classList.remove('ir-flash'), 600);
+      // Sync pump state to home card on IR pump commands
+      if (cmd === 'PUMP_ON') pumpControl('start', 'ir');
+      if (cmd === 'PUMP_OFF' || cmd === 'ALL_STOP') pumpControl('stop', 'ir');
+    }
+
+    function updateHomePump(running) {
+      const valEl    = document.getElementById('home-pump-value');
+      const statEl   = document.getElementById('home-pump-status');
+      const cardEl   = document.getElementById('home-stat-pump');
+      if (running) {
+        valEl.textContent  = 'RUNNING';
+        statEl.textContent = 'Active';
+        statEl.className   = 'hsc-status ok';
+        cardEl.dataset.state = 'ok';
+      } else {
+        valEl.textContent  = 'STOPPED';
+        statEl.textContent = 'Inactive';
+        statEl.className   = 'hsc-status warn';
+        cardEl.dataset.state = 'warn';
+      }
+    }
+
+    /* ── pumpControl(): POST command to Flask → ESP32 picks it up ── */
+    async function pumpControl(action, source = 'web') {
+      const badge   = document.getElementById('pumpBadge');
+      const running = (action === 'start');
+
+      // Optimistic UI update immediately
+      badge.textContent = running ? '● RUNNING' : '◼ STOPPED';
+      badge.className   = 'pump-badge ' + (running ? 'running' : 'stopped');
+      updateHomePump(running);
+
+      // Show a "Sending…" visual on the badge briefly
+      badge.style.opacity = '0.55';
+
+      try {
+        const res = await fetch('/api/pump_control', {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify({ action, source }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || res.status);
+
+        console.log('[AquaFlow] Pump command queued:', data);
+        badge.style.opacity = '';
+
+        // Show a tiny confirmation toast
+        showToast(`Pump ${action === 'start' ? 'ON' : 'OFF'} command sent to hardware`);
+      } catch (err) {
+        console.error('[AquaFlow] pumpControl failed:', err);
+        badge.style.opacity = '';
+        showToast('⚠ Command failed — check server connection', true);
+      }
+    }
+
+    /* ── Toast helper ── */
+    function showToast(msg, isError = false) {
+      let toast = document.getElementById('aq-toast');
+      if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'aq-toast';
+        toast.style.cssText = [
+          'position:fixed','bottom:28px','right:28px','z-index:9999',
+          'padding:12px 22px','border-radius:50px','font-size:0.82rem',
+          'font-weight:600','box-shadow:0 8px 32px rgba(0,0,0,0.18)',
+          'transition:opacity 0.4s','pointer-events:none',
+        ].join(';');
+        document.body.appendChild(toast);
+      }
+      toast.style.background = isError
+        ? 'rgba(239,68,68,0.95)' : 'rgba(26,47,26,0.95)';
+      toast.style.color  = isError ? '#fff' : '#6ee7b7';
+      toast.style.border = isError ? '1px solid rgba(239,68,68,0.5)' : '1px solid rgba(52,211,153,0.4)';
+      toast.textContent  = msg;
+      toast.style.opacity = '1';
+      clearTimeout(toast._t);
+      toast._t = setTimeout(() => { toast.style.opacity = '0'; }, 3200);
+    }
+
+    /* ── Live pump-state sync from DB (ESP32 reflects actual state) ── */
+    async function syncPumpState() {
+      try {
+        const res  = await fetch('/api/pump_state', { cache: 'no-store' });
+        const data = await res.json();
+        if (!data || !data.pump_status || data.pump_status === 'UNKNOWN') return;
+        const running = data.pump_status === 'ON' || data.pump_status === 'RUNNING';
+        const badge   = document.getElementById('pumpBadge');
+        if (badge) {
+          badge.textContent = running ? '● RUNNING' : '◼ STOPPED';
+          badge.className   = 'pump-badge ' + (running ? 'running' : 'stopped');
+        }
+        updateHomePump(running);
+      } catch (_) { /* silent — sensor poll already covers connectivity */ }
+    }
+
+    // Poll actual pump state from hardware every 5 s
+    setInterval(syncPumpState, 5000);
+
+    /* ============================================================
+       CROP INFO — Search with backend API call
+    ============================================================ */
+    const cropInput = document.getElementById('cropSearchInput');
+    const cropSearchBtn = document.getElementById('cropSearchBtn');
+    const cropLoading = document.getElementById('cropLoading');
+    const cropError = document.getElementById('cropError');
+    const cropResults = document.getElementById('cropResults');
+
+    // Crop database — sourced from Sorted_Crop_Environmental_Thresholds.xlsx
+    const localCropDB = {
+      "apple": { name:"Apple", ph:"6.0 - 6.5", moisture:"50% - 65%", temp:"10\u00b0C - 25\u00b0C", humidity:"60% - 75%" },
+      "asparagus": { name:"Asparagus", ph:"6.5 - 7.5", moisture:"50% - 65%", temp:"15\u00b0C - 25\u00b0C", humidity:"60% - 70%" },
+      "avocado": { name:"Avocado", ph:"6.0 - 6.5", moisture:"50% - 65%", temp:"20\u00b0C - 28\u00b0C", humidity:"60% - 70%" },
+      "banana": { name:"Banana", ph:"5.5 - 6.5", moisture:"70% - 85%", temp:"26\u00b0C - 35\u00b0C", humidity:"75% - 85%" },
+      "barley": { name:"Barley", ph:"6.0 - 8.0", moisture:"40% - 55%", temp:"12\u00b0C - 24\u00b0C", humidity:"45% - 60%" },
+      "beetroot": { name:"Beetroot", ph:"6.0 - 7.5", moisture:"60% - 75%", temp:"15\u00b0C - 25\u00b0C", humidity:"60% - 70%" },
+      "bell pepper": { name:"Bell Pepper", ph:"6.0 - 6.8", moisture:"60% - 75%", temp:"20\u00b0C - 25\u00b0C", humidity:"65% - 75%" },
+      "bitter gourd": { name:"Bitter Gourd", ph:"6.0 - 6.7", moisture:"55% - 70%", temp:"24\u00b0C - 35\u00b0C", humidity:"60% - 75%" },
+      "black pepper": { name:"Black Pepper", ph:"5.5 - 6.5", moisture:"65% - 80%", temp:"22\u00b0C - 32\u00b0C", humidity:"70% - 90%" },
+      "blueberry": { name:"Blueberry", ph:"4.5 - 5.5", moisture:"60% - 75%", temp:"15\u00b0C - 25\u00b0C", humidity:"65% - 75%" },
+      "bottle gourd": { name:"Bottle Gourd", ph:"6.0 - 6.8", moisture:"55% - 70%", temp:"24\u00b0C - 32\u00b0C", humidity:"60% - 75%" },
+      "broccoli": { name:"Broccoli", ph:"6.0 - 7.0", moisture:"65% - 80%", temp:"13\u00b0C - 20\u00b0C", humidity:"70% - 85%" },
+      "buckwheat": { name:"Buckwheat", ph:"5.0 - 7.0", moisture:"45% - 60%", temp:"15\u00b0C - 22\u00b0C", humidity:"60% - 70%" },
+      "cabbage": { name:"Cabbage", ph:"6.5 - 7.0", moisture:"65% - 80%", temp:"15\u00b0C - 20\u00b0C", humidity:"70% - 90%" },
+      "cardamom": { name:"Cardamom", ph:"5.0 - 6.5", moisture:"70% - 85%", temp:"15\u00b0C - 25\u00b0C", humidity:"75% - 90%" },
+      "carrot": { name:"Carrot", ph:"6.0 - 6.8", moisture:"60% - 75%", temp:"15\u00b0C - 20\u00b0C", humidity:"65% - 75%" },
+      "cashew": { name:"Cashew", ph:"5.5 - 6.5", moisture:"40% - 55%", temp:"20\u00b0C - 35\u00b0C", humidity:"50% - 65%" },
+      "castor bean": { name:"Castor Bean", ph:"5.0 - 6.5", moisture:"35% - 50%", temp:"20\u00b0C - 30\u00b0C", humidity:"45% - 60%" },
+      "cauliflower": { name:"Cauliflower", ph:"6.0 - 7.0", moisture:"65% - 80%", temp:"15\u00b0C - 20\u00b0C", humidity:"70% - 85%" },
+      "celery": { name:"Celery", ph:"6.0 - 6.5", moisture:"70% - 85%", temp:"15\u00b0C - 21\u00b0C", humidity:"70% - 85%" },
+      "cherry": { name:"Cherry", ph:"6.0 - 6.8", moisture:"55% - 70%", temp:"15\u00b0C - 22\u00b0C", humidity:"60% - 72%" },
+      "chickpeas": { name:"Chickpeas", ph:"6.0 - 9.0", moisture:"35% - 50%", temp:"15\u00b0C - 25\u00b0C", humidity:"40% - 55%" },
+      "chili pepper": { name:"Chili Pepper", ph:"6.0 - 6.8", moisture:"50% - 65%", temp:"20\u00b0C - 30\u00b0C", humidity:"60% - 70%" },
+      "cinnamon": { name:"Cinnamon", ph:"4.5 - 5.5", moisture:"60% - 80%", temp:"25\u00b0C - 32\u00b0C", humidity:"70% - 85%" },
+      "clove": { name:"Clove", ph:"5.0 - 6.0", moisture:"65% - 80%", temp:"20\u00b0C - 30\u00b0C", humidity:"70% - 85%" },
+      "cluster bean (guar)": { name:"Cluster Bean (Guar)", ph:"7.0 - 8.0", moisture:"30% - 45%", temp:"25\u00b0C - 40\u00b0C", humidity:"35% - 50%" },
+      "coconut": { name:"Coconut", ph:"5.2 - 8.0", moisture:"60% - 80%", temp:"22\u00b0C - 32\u00b0C", humidity:"70% - 85%" },
+      "coffee": { name:"Coffee", ph:"5.5 - 6.0", moisture:"60% - 75%", temp:"15\u00b0C - 24\u00b0C", humidity:"70% - 85%" },
+      "coriander": { name:"Coriander", ph:"6.0 - 7.0", moisture:"45% - 60%", temp:"15\u00b0C - 25\u00b0C", humidity:"50% - 65%" },
+      "cotton": { name:"Cotton", ph:"6.0 - 7.5", moisture:"45% - 60%", temp:"21\u00b0C - 30\u00b0C", humidity:"50% - 65%" },
+      "cowpea": { name:"Cowpea", ph:"5.5 - 6.5", moisture:"40% - 55%", temp:"20\u00b0C - 35\u00b0C", humidity:"50% - 70%" },
+      "cucumber": { name:"Cucumber", ph:"6.0 - 6.8", moisture:"65% - 80%", temp:"22\u00b0C - 30\u00b0C", humidity:"70% - 85%" },
+      "cumin": { name:"Cumin", ph:"6.8 - 7.8", moisture:"35% - 45%", temp:"20\u00b0C - 30\u00b0C", humidity:"40% - 50%" },
+      "eggplant (brinjal)": { name:"Eggplant (Brinjal)", ph:"5.5 - 6.8", moisture:"55% - 70%", temp:"24\u00b0C - 30\u00b0C", humidity:"65% - 75%" },
+      "faba bean": { name:"Faba Bean", ph:"6.5 - 8.0", moisture:"50% - 70%", temp:"15\u00b0C - 20\u00b0C", humidity:"60% - 70%" },
+      "fennel": { name:"Fennel", ph:"6.5 - 7.5", moisture:"45% - 60%", temp:"15\u00b0C - 25\u00b0C", humidity:"50% - 65%" },
+      "fenugreek": { name:"Fenugreek", ph:"6.0 - 7.0", moisture:"40% - 55%", temp:"15\u00b0C - 25\u00b0C", humidity:"50% - 60%" },
+      "field pea": { name:"Field Pea", ph:"6.0 - 7.5", moisture:"50% - 65%", temp:"13\u00b0C - 21\u00b0C", humidity:"50% - 65%" },
+      "fig": { name:"Fig", ph:"6.0 - 7.5", moisture:"40% - 55%", temp:"22\u00b0C - 32\u00b0C", humidity:"45% - 60%" },
+      "finger millet (ragi)": { name:"Finger Millet (Ragi)", ph:"5.0 - 7.0", moisture:"40% - 55%", temp:"20\u00b0C - 30\u00b0C", humidity:"50% - 70%" },
+      "foxtail millet": { name:"Foxtail Millet", ph:"5.5 - 7.0", moisture:"35% - 50%", temp:"20\u00b0C - 30\u00b0C", humidity:"45% - 60%" },
+      "garlic": { name:"Garlic", ph:"6.0 - 7.0", moisture:"50% - 60%", temp:"12\u00b0C - 24\u00b0C", humidity:"50% - 60%" },
+      "ginger": { name:"Ginger", ph:"5.5 - 6.5", moisture:"60% - 75%", temp:"24\u00b0C - 30\u00b0C", humidity:"65% - 80%" },
+      "grapes": { name:"Grapes", ph:"5.5 - 6.5", moisture:"45% - 60%", temp:"15\u00b0C - 30\u00b0C", humidity:"50% - 65%" },
+      "green peas": { name:"Green Peas", ph:"6.0 - 7.5", moisture:"55% - 70%", temp:"13\u00b0C - 18\u00b0C", humidity:"60% - 70%" },
+      "groundnut": { name:"Groundnut", ph:"6.0 - 6.5", moisture:"45% - 60%", temp:"22\u00b0C - 30\u00b0C", humidity:"50% - 70%" },
+      "guava": { name:"Guava", ph:"4.5 - 8.2", moisture:"45% - 60%", temp:"22\u00b0C - 30\u00b0C", humidity:"50% - 70%" },
+      "horse gram": { name:"Horse Gram", ph:"5.0 - 7.5", moisture:"30% - 45%", temp:"25\u00b0C - 35\u00b0C", humidity:"40% - 55%" },
+      "jackfruit": { name:"Jackfruit", ph:"6.0 - 7.5", moisture:"55% - 70%", temp:"22\u00b0C - 35\u00b0C", humidity:"60% - 75%" },
+      "kale": { name:"Kale", ph:"6.0 - 7.5", moisture:"60% - 75%", temp:"13\u00b0C - 21\u00b0C", humidity:"65% - 75%" },
+      "kidney beans": { name:"Kidney Beans", ph:"6.0 - 6.5", moisture:"50% - 65%", temp:"15\u00b0C - 25\u00b0C", humidity:"55% - 65%" },
+      "kiwi": { name:"Kiwi", ph:"5.5 - 6.5", moisture:"60% - 75%", temp:"15\u00b0C - 25\u00b0C", humidity:"65% - 75%" },
+      "lemon": { name:"Lemon", ph:"5.5 - 6.5", moisture:"50% - 65%", temp:"20\u00b0C - 30\u00b0C", humidity:"55% - 70%" },
+      "lentils": { name:"Lentils", ph:"6.0 - 8.0", moisture:"40% - 55%", temp:"15\u00b0C - 25\u00b0C", humidity:"45% - 60%" },
+      "lettuce": { name:"Lettuce", ph:"6.0 - 7.0", moisture:"65% - 80%", temp:"12\u00b0C - 18\u00b0C", humidity:"65% - 80%" },
+      "linseed (flax)": { name:"Linseed (Flax)", ph:"5.0 - 7.0", moisture:"45% - 60%", temp:"10\u00b0C - 25\u00b0C", humidity:"50% - 65%" },
+      "litchi": { name:"Litchi", ph:"5.5 - 6.5", moisture:"60% - 75%", temp:"25\u00b0C - 35\u00b0C", humidity:"65% - 80%" },
+      "maize (corn)": { name:"Maize (Corn)", ph:"5.8 - 7.0", moisture:"50% - 70%", temp:"18\u00b0C - 27\u00b0C", humidity:"60% - 75%" },
+      "mango": { name:"Mango", ph:"5.5 - 7.5", moisture:"45% - 60%", temp:"24\u00b0C - 32\u00b0C", humidity:"50% - 65%" },
+      "mung bean": { name:"Mung Bean", ph:"6.2 - 7.2", moisture:"40% - 60%", temp:"25\u00b0C - 35\u00b0C", humidity:"50% - 70%" },
+      "mustard": { name:"Mustard", ph:"6.0 - 7.5", moisture:"40% - 55%", temp:"10\u00b0C - 25\u00b0C", humidity:"55% - 70%" },
+      "niger seed": { name:"Niger Seed", ph:"5.5 - 7.0", moisture:"40% - 55%", temp:"18\u00b0C - 28\u00b0C", humidity:"50% - 65%" },
+      "oats": { name:"Oats", ph:"5.5 - 7.0", moisture:"50% - 65%", temp:"10\u00b0C - 21\u00b0C", humidity:"55% - 70%" },
+      "oil palm": { name:"Oil Palm", ph:"4.0 - 6.0", moisture:"70% - 85%", temp:"24\u00b0C - 32\u00b0C", humidity:"75% - 90%" },
+      "okra": { name:"Okra", ph:"6.0 - 6.8", moisture:"55% - 70%", temp:"25\u00b0C - 35\u00b0C", humidity:"65% - 75%" },
+      "onion": { name:"Onion", ph:"6.0 - 7.0", moisture:"50% - 65%", temp:"13\u00b0C - 24\u00b0C", humidity:"55% - 70%" },
+      "orange": { name:"Orange", ph:"6.0 - 7.0", moisture:"55% - 70%", temp:"21\u00b0C - 32\u00b0C", humidity:"60% - 75%" },
+      "papaya": { name:"Papaya", ph:"6.0 - 6.5", moisture:"60% - 75%", temp:"22\u00b0C - 30\u00b0C", humidity:"60% - 75%" },
+      "peach": { name:"Peach", ph:"6.0 - 6.5", moisture:"50% - 65%", temp:"15\u00b0C - 25\u00b0C", humidity:"55% - 70%" },
+      "pear": { name:"Pear", ph:"6.0 - 6.5", moisture:"55% - 70%", temp:"10\u00b0C - 25\u00b0C", humidity:"60% - 75%" },
+      "pearl millet (bajra)": { name:"Pearl Millet (Bajra)", ph:"6.5 - 7.5", moisture:"30% - 45%", temp:"25\u00b0C - 35\u00b0C", humidity:"40% - 55%" },
+      "pigeon pea (arhar)": { name:"Pigeon Pea (Arhar)", ph:"5.0 - 7.0", moisture:"40% - 55%", temp:"20\u00b0C - 35\u00b0C", humidity:"45% - 65%" },
+      "pineapple": { name:"Pineapple", ph:"4.5 - 5.5", moisture:"55% - 70%", temp:"22\u00b0C - 32\u00b0C", humidity:"70% - 80%" },
+      "plum": { name:"Plum", ph:"6.0 - 6.5", moisture:"50% - 65%", temp:"15\u00b0C - 25\u00b0C", humidity:"55% - 70%" },
+      "pomegranate": { name:"Pomegranate", ph:"5.5 - 7.0", moisture:"40% - 55%", temp:"25\u00b0C - 35\u00b0C", humidity:"40% - 50%" },
+      "potato": { name:"Potato", ph:"5.2 - 6.0", moisture:"65% - 80%", temp:"15\u00b0C - 20\u00b0C", humidity:"60% - 80%" },
+      "pumpkin": { name:"Pumpkin", ph:"6.0 - 6.8", moisture:"50% - 65%", temp:"20\u00b0C - 30\u00b0C", humidity:"60% - 70%" },
+      "quinoa": { name:"Quinoa", ph:"6.0 - 8.5", moisture:"35% - 50%", temp:"15\u00b0C - 25\u00b0C", humidity:"40% - 60%" },
+      "radish": { name:"Radish", ph:"6.0 - 7.0", moisture:"60% - 75%", temp:"12\u00b0C - 22\u00b0C", humidity:"65% - 75%" },
+      "rice (paddy)": { name:"Rice (Paddy)", ph:"5.5 - 6.5", moisture:"60% - 80%", temp:"20\u00b0C - 35\u00b0C", humidity:"70% - 90%" },
+      "rubber": { name:"Rubber", ph:"4.5 - 5.5", moisture:"70% - 85%", temp:"25\u00b0C - 34\u00b0C", humidity:"75% - 90%" },
+      "rye": { name:"Rye", ph:"5.0 - 7.0", moisture:"40% - 60%", temp:"10\u00b0C - 20\u00b0C", humidity:"50% - 65%" },
+      "safflower": { name:"Safflower", ph:"6.0 - 8.0", moisture:"30% - 45%", temp:"22\u00b0C - 30\u00b0C", humidity:"40% - 50%" },
+      "sesame": { name:"Sesame", ph:"5.5 - 8.0", moisture:"35% - 50%", temp:"25\u00b0C - 35\u00b0C", humidity:"45% - 60%" },
+      "sorghum (jowar)": { name:"Sorghum (Jowar)", ph:"6.0 - 7.5", moisture:"35% - 50%", temp:"25\u00b0C - 32\u00b0C", humidity:"40% - 60%" },
+      "soybean": { name:"Soybean", ph:"6.0 - 6.8", moisture:"50% - 70%", temp:"20\u00b0C - 30\u00b0C", humidity:"60% - 75%" },
+      "spinach": { name:"Spinach", ph:"6.0 - 7.5", moisture:"60% - 75%", temp:"15\u00b0C - 20\u00b0C", humidity:"60% - 70%" },
+      "strawberry": { name:"Strawberry", ph:"5.5 - 6.2", moisture:"65% - 75%", temp:"15\u00b0C - 25\u00b0C", humidity:"65% - 75%" },
+      "sugarcane": { name:"Sugarcane", ph:"6.0 - 7.5", moisture:"65% - 80%", temp:"20\u00b0C - 35\u00b0C", humidity:"60% - 85%" },
+      "sunflower": { name:"Sunflower", ph:"6.0 - 7.5", moisture:"45% - 65%", temp:"20\u00b0C - 25\u00b0C", humidity:"50% - 65%" },
+      "sweet potato": { name:"Sweet Potato", ph:"5.5 - 6.5", moisture:"50% - 65%", temp:"24\u00b0C - 30\u00b0C", humidity:"65% - 80%" },
+      "tea": { name:"Tea", ph:"4.5 - 5.5", moisture:"65% - 80%", temp:"13\u00b0C - 30\u00b0C", humidity:"75% - 90%" },
+      "tobacco": { name:"Tobacco", ph:"5.5 - 6.5", moisture:"50% - 65%", temp:"20\u00b0C - 30\u00b0C", humidity:"60% - 70%" },
+      "tomato": { name:"Tomato", ph:"6.0 - 6.8", moisture:"60% - 70%", temp:"21\u00b0C - 24\u00b0C", humidity:"65% - 75%" },
+      "turmeric": { name:"Turmeric", ph:"5.5 - 6.5", moisture:"60% - 75%", temp:"20\u00b0C - 30\u00b0C", humidity:"65% - 80%" },
+      "turnip": { name:"Turnip", ph:"6.0 - 7.0", moisture:"60% - 70%", temp:"12\u00b0C - 22\u00b0C", humidity:"60% - 70%" },
+      "urad bean": { name:"Urad Bean", ph:"6.0 - 7.5", moisture:"45% - 60%", temp:"25\u00b0C - 35\u00b0C", humidity:"55% - 70%" },
+      "watermelon": { name:"Watermelon", ph:"6.0 - 6.8", moisture:"50% - 65%", temp:"24\u00b0C - 35\u00b0C", humidity:"60% - 70%" },
+      "wheat": { name:"Wheat", ph:"6.0 - 7.5", moisture:"40% - 60%", temp:"10\u00b0C - 25\u00b0C", humidity:"50% - 60%" },
+      "zucchini": { name:"Zucchini", ph:"6.0 - 7.5", moisture:"60% - 75%", temp:"21\u00b0C - 28\u00b0C", humidity:"65% - 75%" }
+    };
+
+    function displayCropResult(data) {
+      document.getElementById('res-cropname').textContent = data.name || data['Crop name'] || '—';
+      document.getElementById('res-ph').textContent = data.ph || data['Optimal Irrigating Water {pH} Range'] || '—';
+      document.getElementById('res-moisture').textContent = data.moisture || data['Target Soil Moisture'] || '—';
+      document.getElementById('res-temp').textContent = data.temp || data['Optimal Temperature'] || '—';
+      document.getElementById('res-humidity').textContent = data.humidity || data['Ambient Relative Humidity'] || '—';
+      cropResults.style.display = 'block';
+    }
+
+    function searchCrop(query) {
+      if (!query.trim()) return;
+      cropLoading.style.display = 'flex';
+      cropError.style.display = 'none';
+      cropResults.style.display = 'none';
+
+      // Search local crop DB (sourced from Sorted_Crop_Environmental_Thresholds.xlsx)
+      const key = query.trim().toLowerCase();
+      // Exact match first, then partial match
+      let local = localCropDB[key];
+      if (!local) {
+        const partialKey = Object.keys(localCropDB).find(k => k.includes(key) || key.includes(k));
+        local = partialKey ? localCropDB[partialKey] : null;
+      }
+      cropLoading.style.display = 'none';
+      if (local) {
+        displayCropResult(local);
+      } else {
+        cropError.style.display = 'flex';
+      }
+    }
+
+    cropSearchBtn.addEventListener('click', () => searchCrop(cropInput.value));
+    cropInput.addEventListener('keydown', e => { if (e.key === 'Enter') searchCrop(cropInput.value); });
+
+    function quickSearch(cropName) {
+      cropInput.value = cropName;
+      searchCrop(cropName);
+    }
+
+    /* ============================================================
+       SPARKLINES — init immediately (not gated by perf section)
+    ============================================================ */
+    window.addEventListener('load', () => {
+      // Draw sparklines on the Sensor Readings card immediately on load,
+      // before the user ever visits the Performance section.
+      // We wait 800ms to give pollLatestReading() + backfillHistoryFromDB()
+      // time to populate sensorHistory[] with real DB data first.
+      setTimeout(() => {
+        if (!chartsInitialized) {
+          if (!sensorHistory.ph.length) seedHistory();
+          function miniLine(id, pts, col) {
+            const c = document.getElementById(id);
+            if (!c) return null;
+            // Destroy any existing chart on this canvas
+            const existing = Chart.getChart(c);
+            if (existing) existing.destroy();
+            return new Chart(c, {
+              type: 'line',
+              data: {
+                labels: pts.map((_,i) => i),
+                datasets: [{ data: pts, borderColor: col, borderWidth: 2, pointRadius: 0, tension: 0.4, fill: false }]
+              },
+              options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { display: false }, tooltip: { enabled: false } },
+                scales: { x: { display: false }, y: { display: false } },
+                animation: { duration: 400 }
+              }
+            });
+          }
+          sparkPh   = miniLine('sparkline-ph',   [...sensorHistory.ph],          '#34d399');
+          sparkTemp = miniLine('sparkline-temp',  [...sensorHistory.temperature], '#2dd4bf');
+        }
+      }, 800);
+    });
+
+  </script>
+
+</body>
+</html>
